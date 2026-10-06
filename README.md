@@ -9,7 +9,7 @@ Cada seção organiza um aspecto específico da formação e desenvolvimento pro
 
 | Seção | Onde |
 |---|---|
-| 👤 Perfil & Apresentação | [luizguilhermej/](luizguilhermej/) |
+| 👤 Perfil & Apresentação | [luizguilhermej/](https://github.com/luizguilhermej/luizguilhermej) |
 | 📖 Disciplinas | [disciplinas/](disciplinas/README.md) |
 | 🛠️ Projetos | [projetos](https://github.com/luizguilhermej/projetos) |
 | 🎓 Certificados | [certificados](https://github.com/luizguilhermej/certificados) |
