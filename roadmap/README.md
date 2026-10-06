@@ -9,10 +9,10 @@ Plano e acompanhamento da minha evolução acadêmica e profissional: o que esto
 ## 🎯 Visão geral
 
 **Objetivo de longo prazo:**
-<!-- Atuar como Engenheiro de Software ou IA no exterior -->
+Atuar como Engenheiro de Software ou IA no exterior
 
 **Foco atual:**
-<!-- Estou concentrado em melhorar e dominar cada uma das habilidades necessárias para me tornar um Engenheiro de Software de excelência. Espero contribuir o quanto antes para a tecnologia e o mundo. -->
+Estou concentrado em melhorar e dominar cada uma das habilidades necessárias para me tornar um Engenheiro de Software de excelência. Espero contribuir o quanto antes para a tecnologia e o mundo.
 
 ---
 
