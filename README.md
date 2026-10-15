@@ -1,11 +1,11 @@
-# 📚 Study Hub
+# Study Hub
 O índice central do meu portfólio acadêmico e profissional em Engenharia de Software.
 
 O Study Hub não é apenas um repositório — é um sistema vivo que cresce junto com a graduação, conectando conhecimento teórico, prática técnica e identidade profissional.
 
 Cada seção organiza um aspecto específico da formação e desenvolvimento profissional, criando uma estrutura integrada e escalável.
 
-## 🧭 Navegação
+## Navegação
 
 | Seção | Onde |
 |---|---|
