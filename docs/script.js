@@ -1,48 +1,107 @@
-// Menu do celular, destaque da seção ativa, botão de copiar e-mail e ano do rodapé.
-(function () {
-  "use strict";
-  var botao = document.querySelector(".menu-btn");
-  var menu = document.getElementById("menu");
+/* Progressive enhancement: o conteúdo permanece legível sem JavaScript. */
+document.documentElement.classList.add("js-ready");
 
-  function alternarMenu(aberto) {
-    menu.classList.toggle("open", aberto);
-    botao.setAttribute("aria-expanded", String(aberto));
-  }
-  botao.addEventListener("click", function () {
-    alternarMenu(botao.getAttribute("aria-expanded") !== "true");
+const menuButton = document.querySelector(".menu-toggle");
+const navigation = document.querySelector("#site-nav");
+
+if (menuButton && navigation) {
+  const closeMenu = () => {
+    menuButton.setAttribute("aria-expanded", "false");
+    menuButton.setAttribute("aria-label", "Abrir menu");
+    navigation.classList.remove("is-open");
+  };
+
+  menuButton.addEventListener("click", () => {
+    const isOpen = menuButton.getAttribute("aria-expanded") === "true";
+    menuButton.setAttribute("aria-expanded", String(!isOpen));
+    menuButton.setAttribute("aria-label", isOpen ? "Abrir menu" : "Fechar menu");
+    navigation.classList.toggle("is-open", !isOpen);
   });
-  menu.addEventListener("click", function (e) { if (e.target.tagName === "A") alternarMenu(false); });
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape") alternarMenu(false); });
 
-  document.getElementById("ano").textContent = new Date().getFullYear();
+  navigation.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", closeMenu);
+  });
 
-  // Seção ativa no menu
-  if ("IntersectionObserver" in window) {
-    var links = menu.querySelectorAll("a");
-    var obs = new IntersectionObserver(function (entradas) {
-      entradas.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        links.forEach(function (a) {
-          if (a.getAttribute("href") === "#" + en.target.id) a.setAttribute("aria-current", "true");
-          else a.removeAttribute("aria-current");
-        });
-      });
-    }, { rootMargin: "-40% 0px -55% 0px" });
-    document.querySelectorAll("main section[id]").forEach(function (s) { obs.observe(s); });
-  }
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeMenu();
+      menuButton.focus();
+    }
+  });
 
-  // Copiar e-mail (o link mailto continua funcionando sem JavaScript)
-  var copiar = document.querySelector(".copy-btn");
-  var aviso = document.querySelector(".copy-status");
-  if (copiar && navigator.clipboard) {
-    copiar.hidden = false;
-    copiar.addEventListener("click", function () {
-      navigator.clipboard.writeText(copiar.dataset.copy).then(function () {
-        aviso.textContent = "E-mail copiado.";
-      }, function () {
-        aviso.textContent = "Não foi possível copiar. Selecione o e-mail e copie manualmente.";
-      });
-      setTimeout(function () { aviso.textContent = ""; }, 3000);
+  document.addEventListener("click", (event) => {
+    if (!navigation.contains(event.target) && !menuButton.contains(event.target)) {
+      closeMenu();
+    }
+  });
+}
+
+/* Revelação breve, uma única vez por elemento; desativada por reduced motion. */
+const revealItems = document.querySelectorAll(".reveal");
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+if ("IntersectionObserver" in window && !reducedMotion) {
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      }
     });
-  }
-})();
+  }, { threshold: 0.12, rootMargin: "0px 0px -25px 0px" });
+
+  revealItems.forEach((item) => revealObserver.observe(item));
+} else {
+  revealItems.forEach((item) => item.classList.add("is-visible"));
+}
+
+/* Destaca a seção atual na navegação principal. */
+const navLinks = Array.from(document.querySelectorAll('.site-nav a[href^="#"]'));
+const observedSections = navLinks
+  .map((link) => document.querySelector(link.getAttribute("href")))
+  .filter(Boolean);
+
+if ("IntersectionObserver" in window) {
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      navLinks.forEach((link) => {
+        const active = link.getAttribute("href") === `#${entry.target.id}`;
+        if (active) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+        link.classList.toggle("is-active", active);
+      });
+    });
+  }, { rootMargin: "-30% 0px -58% 0px", threshold: 0 });
+  observedSections.forEach((section) => sectionObserver.observe(section));
+}
+
+/* Clipboard API com fallback e confirmação acessível. */
+const copyButton = document.querySelector("#copy-email");
+const copyFeedback = document.querySelector("#copy-feedback");
+
+if (copyButton && copyFeedback) {
+  copyButton.addEventListener("click", async () => {
+    const email = copyButton.dataset.email;
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(email);
+      } else {
+        const temporaryInput = document.createElement("textarea");
+        temporaryInput.value = email;
+        temporaryInput.setAttribute("readonly", "");
+        temporaryInput.style.position = "fixed";
+        temporaryInput.style.opacity = "0";
+        document.body.appendChild(temporaryInput);
+        temporaryInput.select();
+        const copied = document.execCommand("copy");
+        temporaryInput.remove();
+        if (!copied) throw new Error("Cópia indisponível");
+      }
+      copyFeedback.textContent = "E-mail copiado: " + email;
+      copyButton.innerHTML = 'Copiado <span aria-hidden="true">✓</span>';
+    } catch {
+      copyFeedback.textContent = "Não foi possível copiar automaticamente. Use: " + email;
+    }
+  });
+}
