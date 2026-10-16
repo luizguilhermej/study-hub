@@ -1,4 +1,4 @@
-# Study Hub
+# Study Hub - Portfólio Acadêmico e Profissional
 O índice central do meu portfólio acadêmico e profissional em Engenharia de Software.
 
 O Study Hub não é apenas um repositório — é um sistema vivo que cresce junto com a graduação, conectando conhecimento teórico, prática técnica e identidade profissional.
