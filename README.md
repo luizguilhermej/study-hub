@@ -5,6 +5,8 @@ O Study Hub não é apenas um repositório — é um sistema vivo que cresce jun
 
 Cada seção organiza um aspecto específico da formação e desenvolvimento profissional, criando uma estrutura integrada e escalável.
 
+# [Site - Luiz Guilherme Oliveira Jardim](https://luizguilhermej.github.io/study-hub/)
+
 ## Navegação
 
 | Seção | Onde |
